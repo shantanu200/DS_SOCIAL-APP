@@ -19,7 +19,7 @@ Designed a distributed microservices social media application (like TWITTER)
 Make sure you have following services installed:
 
 - Golang
-  - [Install Golang](https://www.digitalocean.com/community/tutorials/how-to-install-go-on-ubuntu-20-04)
+  - [Install Golang ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-go-on-ubuntu-20-04)
 - Docker & Docker compose
   - [Install Docker Compose ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04)
 - Make
