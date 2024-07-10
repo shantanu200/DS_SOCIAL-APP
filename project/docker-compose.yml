@@ -1,0 +1,117 @@
+# Instruction
+# Update following file according to your use
+# Remove <PRODUCTION_URL> to use application in local/dev mode
+
+version: '3'
+
+services:
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - "./db-data/redis-data:/data"
+    
+  postgres:
+    image: 'postgres:14.0'
+    ports:
+      - "5432:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: twitter
+    volumes:
+      - ./db-data/postgres/:/var/lib/postgresql/data/
+  
+  rabbitmq:
+    image: 'rabbitmq:3.9-alpine'
+    ports:
+      - "5672:5672"
+    deploy:
+      mode: replicated
+      replicas: 1
+    user: "999"
+    volumes:
+      - ./db-data/rabbitmq/:/var/lib/rabbitmq/mnesiav2
+
+  user-service:
+    build:
+      context: ./../user-service
+      dockerfile: ./../user-service/user-service.dockerfile
+    restart: always
+    ports:
+      - "8080:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "<PRODUCTION_DATABASE_URL> || host=postgres user=postgres password=root dbname=myDatabase port=5672 sslmode=disable TimeZone=Asia/Kolkata" 
+      REDIS: "<PRODUCTION_REDIS_URL> || redis:6379"
+      ACCESSKEY_ID: "<AWS_ACCESSKEY_ID>"
+      ACCESSKEY_SECRET: "<AWS_ACCESSKEY_SECRET>"
+  
+  tweet-service:
+    build:
+      context: ./../tweet-service
+      dockerfile: ./../tweet-service/tweet-service.dockerfile
+    restart: always
+    ports:
+      - "8081:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "<PRODUCTION_DATABASE_URL> || host=postgres user=postgres password=root dbname=myDatabase port=5672 sslmode=disable TimeZone=Asia/Kolkata" 
+      REDIS: "<PRODUCTION_REDIS_URL> || redis:6379"
+      ACCESSKEY_ID: "<AWS_ACCESSKEY_ID>"
+      ACCESSKEY_SECRET: "<AWS_ACCESSKEY_SECRET>"
+    
+  user-relation-service:
+    build:
+      context: ./../user-relation-service
+      dockerfile: ./../user-relation-service/user-relation-service.dockerfile
+    restart: always
+    ports:
+      - "8084:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "<PRODUCTION_DATABASE_URL> || host=postgres user=postgres password=root dbname=myDatabase port=5672 sslmode=disable TimeZone=Asia/Kolkata" 
+      REDIS: "<PRODUCTION_REDIS_URL> || redis:6379"
+
+  notification-service:
+    build:
+      context: ./../notification-service
+      dockerfile: ./../notification-service/notification-service.dockerfile
+    restart: always
+    ports:
+      - "8082:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "<PRODUCTION_DATABASE_URL> || host=postgres user=postgres password=root dbname=myDatabase port=5672 sslmode=disable TimeZone=Asia/Kolkata" 
+      REDIS: "<PRODUCTION_REDIS_URL> || redis:6379"
+
+  timeline-service:
+    build:
+      context: ./../timeline-service
+      dockerfile: ./../timeline-service/timeline-service.dockerfile
+    restart: always
+    ports:
+      - "8085:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "<PRODUCTION_DATABASE_URL> || host=postgres user=postgres password=root dbname=myDatabase port=5672 sslmode=disable TimeZone=Asia/Kolkata" 
+      REDIS: "<PRODUCTION_REDIS_URL> || redis:6379"
+
+
+

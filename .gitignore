@@ -1,3 +1,7 @@
-project
+project/db-data
+project/k8
+project/postgres
+project/ingress.yml
+project/swarm.yml
 user-service/.env
 tweet-service/.env
