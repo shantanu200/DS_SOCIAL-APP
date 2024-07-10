@@ -29,8 +29,11 @@ Make sure you have following services installed:
 Run DS_SOCIAL APP with docker compose
 
 ```bash
-  cd DS_SOCIAL APP
+  cd DS_SOCIAL-APP
   cd project
+
+ (Make Change in project/docker-compose.yml according to your requirement)
+
   make up_build
 ```
     
