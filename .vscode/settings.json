@@ -1,0 +1,29 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "43.204.216.137",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "database": "twitter",
+            "name": "EC2",
+            "username": "postgres"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "connectString": "postgres://postgres:root@43.204.216.137:5432/twitter?sslmode=disable",
+            "name": "EC2"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "LocalHost",
+            "username": "postgres",
+            "database": "twitter"
+        }
+    ]
+}
